@@ -1,15 +1,8 @@
 {
-  "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "api/airtable.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/airtable",
-      "dest": "/api/airtable.js"
+      "source": "/api/airtable",
+      "destination": "/api/airtable.js"
     }
   ]
 }

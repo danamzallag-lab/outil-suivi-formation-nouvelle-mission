@@ -10,18 +10,6 @@
     {
       "src": "/api/airtable",
       "dest": "/api/airtable.js"
-    },
-    {
-      "src": "/",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/dashboard",
-      "dest": "/dashboard-formateur.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
     }
   ]
 }

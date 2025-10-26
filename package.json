@@ -1,0 +1,13 @@
+{
+  "name": "outil-suivi-formation",
+  "version": "1.0.0",
+  "description": "Système de suivi de formation - Formulaire avec proxy API Airtable",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Static site - no build needed'"
+  },
+  "keywords": ["formation", "airtable", "suivi"],
+  "author": "",
+  "license": "MIT"
+}

@@ -408,8 +408,9 @@
         // CONFIGURATION AIRTABLE
         // ==========================================
         const AIRTABLE_CONFIG = {
-            webhookUrl: 'https://hooks.airtable.com/workflows/v1/genericWebhook/appLyreRyfaYDIsyc/wflXZYKModO0lLrNk/wtrccVGWHC9vpY8IG'
-            // ✅ Webhook configuré et connecté à votre base Airtable "Suivi Pratiques"
+            // URL de l'API proxy Vercel (évite les problèmes CORS)
+            webhookUrl: '/api/airtable'
+            // L'API proxy redirigera vers le webhook Airtable
         };
 
         // ==========================================

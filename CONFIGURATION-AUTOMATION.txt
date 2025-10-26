@@ -1,0 +1,223 @@
+# 🔧 CONFIGURATION AUTOMATION AIRTABLE - GUIDE VISUEL
+
+## ✅ VOTRE WEBHOOK EST DÉJÀ CRÉÉ
+
+URL : https://hooks.airtable.com/workflows/v1/genericWebhook/appLyreRyfaYDIsyc/wflXZYKModO0lLrNk/wtrccVGWHC9vpY8IG
+
+---
+
+## 📋 ÉTAPES RESTANTES (5 MINUTES)
+
+### ÉTAPE 1 : Ouvrir votre automation
+
+1. Dans Airtable, cliquez sur **"Automations"** (en haut à droite)
+2. Ouvrez l'automation que vous avez créée
+3. Vous devriez voir le trigger "Lorsqu'un point d'ancrage web est..."
+
+### ÉTAPE 2 : Ajouter l'action "Créer une entrée"
+
+1. Cliquez sur **"+ Ajouter une action"** (ou "+ Ajouter une action ou une logique avancée")
+2. Sélectionnez **"Créer une entrée"** (ou "Create record")
+3. Choisissez votre table : **"Suivi Pratiques"**
+
+### ÉTAPE 3 : Mapper TOUS les champs
+
+Dans l'interface de mapping, cliquez sur chaque champ et sélectionnez la valeur correspondante du webhook :
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ MAPPING DES CHAMPS - COPIER-COLLER EXACTEMENT              │
+└─────────────────────────────────────────────────────────────┘
+
+Nom                    →  webhook.data.nom
+Prénom                 →  webhook.data.prenom
+Email                  →  webhook.data.email
+Officine               →  webhook.data.officine
+Date Entretien         →  webhook.data.dateEntretien
+Type Entretien         →  webhook.data.typeEntretien
+Évaluation             →  webhook.data.evaluation
+Difficultés            →  webhook.data.difficultes
+Gestion Difficultés    →  webhook.data.gestionDifficultes
+Observations           →  webhook.data.observations
+Besoins Suivi          →  webhook.data.besoinsSuivi
+Date Envoi             →  webhook.data.dateEnvoi
+Statut Suivi           →  "🆕 Nouveau" (valeur fixe - tapez directement)
+Notes Formateur        →  (laisser vide)
+```
+
+### ÉTAPE 4 : Instructions détaillées pour le mapping
+
+Pour chaque champ dans Airtable :
+
+1. **Cliquez sur le champ** (ex: "Nom")
+2. Dans le menu déroulant, cherchez **"webhook"**
+3. Développez **"webhook"** → **"data"**
+4. Sélectionnez le champ correspondant (ex: "nom")
+
+**EXCEPTION - Statut Suivi** :
+- Cliquez sur le champ "Statut Suivi"
+- Au lieu de sélectionner webhook, **tapez directement** : 🆕 Nouveau
+- Ou sélectionnez dans la liste déroulante : "🆕 Nouveau"
+
+### ÉTAPE 5 : Activer l'automation
+
+1. En haut à droite de l'automation, vous verrez un **toggle ON/OFF**
+2. **Activez-le** (doit être vert/bleu)
+3. Si un message d'erreur apparaît, vérifiez que tous les champs obligatoires sont mappés
+
+---
+
+## 🧪 TESTER L'AUTOMATION
+
+### Test 1 : Test manuel dans Airtable
+
+1. Dans votre automation, cliquez sur **"Tester l'étape"** (ou "Test step")
+2. Airtable va vous demander un exemple de données
+3. Utilisez cet exemple :
+
+```json
+{
+  "nom": "Dupont",
+  "prenom": "Marie",
+  "email": "marie.dupont@test.com",
+  "officine": "Pharmacie Test",
+  "dateEntretien": "2025-01-26",
+  "typeEntretien": "AOD",
+  "evaluation": "4",
+  "difficultes": "Gestion du temps",
+  "gestionDifficultes": "J'ai pris plus de temps que prévu mais j'ai réussi",
+  "observations": "Bonne expérience globale",
+  "besoinsSuivi": "Non, je suis à l'aise",
+  "dateEnvoi": "2025-01-26T14:30:00Z"
+}
+```
+
+4. Cliquez sur **"Run test"**
+5. ✅ Vérifiez qu'une nouvelle entrée apparaît dans votre table
+
+### Test 2 : Test avec le formulaire HTML
+
+1. Ouvrez le fichier **outil-suivi-formation.html**
+2. Remplissez le formulaire
+3. Cliquez sur "Envoyer mon retour"
+4. ✅ Vérifiez dans Airtable que les données sont bien arrivées
+
+---
+
+## 🚨 PROBLÈMES FRÉQUENTS ET SOLUTIONS
+
+### ❌ Erreur : "Field not found"
+
+**Cause** : Un champ n'existe pas dans votre table Airtable  
+**Solution** : Vérifiez que TOUS les champs listés ci-dessus existent dans votre table
+
+### ❌ Erreur : "Invalid value for select field"
+
+**Cause** : La valeur envoyée ne correspond pas aux options du Single Select  
+**Solution** : Vérifiez vos options dans les champs "Type Entretien", "Évaluation", "Besoins Suivi"
+
+**Options requises** :
+
+**Type Entretien** (Single select) :
+- Femme enceinte
+- Opioïdes
+- AOD
+- AVK
+- Asthme
+
+**Évaluation** (Single select) :
+- 1
+- 2
+- 3
+- 4
+- 5
+
+**Besoins Suivi** (Single select) :
+- Non, je suis à l'aise
+- Oui - rappel théorique
+- Oui - pratique supplémentaire
+- Oui - débriefing individuel
+- Non renseigné
+
+**Statut Suivi** (Single select) :
+- 🆕 Nouveau
+- 👀 À traiter
+- ✅ Traité
+- 📞 À contacter
+
+### ❌ L'automation ne se déclenche pas
+
+**Causes possibles** :
+1. L'automation n'est pas activée (toggle OFF) → Activez-la
+2. Le webhook n'est pas correctement configuré → Régénérez-le
+3. Le formulaire HTML a une mauvaise URL → Vérifiez ligne 347
+
+### ❌ Les données arrivent mais sont mal formatées
+
+**Cause** : Mauvais mapping des champs  
+**Solution** : Vérifiez le mapping exact ci-dessus, chaque point compte (majuscules/minuscules)
+
+---
+
+## ✅ CHECKLIST DE VALIDATION
+
+Avant de passer à l'étape suivante, assurez-vous que :
+
+- [ ] Le trigger webhook est configuré
+- [ ] L'action "Créer une entrée" est ajoutée
+- [ ] TOUS les champs sont mappés (13 champs au total)
+- [ ] "Statut Suivi" est fixé à "🆕 Nouveau"
+- [ ] L'automation est ACTIVÉE (toggle ON)
+- [ ] Test manuel réussi
+- [ ] Test avec formulaire HTML réussi
+- [ ] Les données apparaissent correctement dans Airtable
+
+---
+
+## 📸 AIDE VISUELLE
+
+Si vous avez du mal à trouver les options, voici où chercher :
+
+**Pour ajouter une action** :
+```
+[Trigger: Webhook] → [+ Ajouter une action] → [Créer une entrée]
+```
+
+**Pour mapper un champ** :
+```
+[Nom du champ Airtable] → [Cliquer sur l'icône +] → [webhook] → [data] → [nom]
+```
+
+**Pour activer** :
+```
+[En haut à droite de l'automation] → [Toggle OFF/ON] → [Passer à ON]
+```
+
+---
+
+## 🎯 APRÈS CONFIGURATION
+
+Une fois l'automation configurée et testée avec succès :
+
+1. ✅ Votre système est opérationnel
+2. 🚀 Déployez le formulaire en ligne (Netlify, votre serveur...)
+3. 📱 Créez un QR Code pour faciliter l'accès
+4. 📧 Configurez les automations d'emails (optionnel)
+5. 👥 Partagez avec vos apprenants
+
+---
+
+## 📞 BESOIN D'AIDE ?
+
+Si vous êtes bloqué :
+
+1. Consultez les logs de l'automation (onglet "Historique")
+2. Vérifiez la console du navigateur (F12) lors de l'envoi du formulaire
+3. Testez avec webhook.site pour valider que les données partent bien
+4. Contactez le support Airtable : support.airtable.com
+
+---
+
+**Vous êtes presque prêt ! 💪**
+
+Une fois cette configuration terminée, votre système de suivi sera 100% opérationnel.

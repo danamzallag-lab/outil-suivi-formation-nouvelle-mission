@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suivi de Formation - Entretiens Pharmaceutiques</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section h2 {
+            color: #667eea;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .radio-option {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .radio-option input[type="radio"] {
+            display: none;
+        }
+
+        .radio-option label {
+            display: block;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .radio-option input[type="radio"]:checked + label {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .rating-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .rating-option {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .rating-option:hover {
+            transform: scale(1.1);
+        }
+
+        .rating-option.selected {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .success-message {
+            background: #10b981;
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-box {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        .difficulty-badges {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .difficulty-badge {
+            padding: 8px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .difficulty-badge.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 25px;
+            }
+
+            .radio-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Suivi de Formation</h1>
+            <p>Mise en pratique des entretiens pharmaceutiques</p>
+        </div>
+
+        <div class="card">
+            <form id="suiviForm">
+                <!-- Section 1: Identification -->
+                <div class="form-section">
+                    <h2>👤 Identification</h2>
+                    
+                    <div class="form-group">
+                        <label for="nom">Nom *</label>
+                        <input type="text" id="nom" name="nom" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prenom">Prénom *</label>
+                        <input type="text" id="prenom" name="prenom" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="officine">Officine / Structure</label>
+                        <input type="text" id="officine" name="officine">
+                    </div>
+                </div>
+
+                <!-- Section 2: Entretien réalisé -->
+                <div class="form-section">
+                    <h2>💊 Entretien réalisé</h2>
+
+                    <div class="form-group">
+                        <label for="dateEntretien">Date de mise en pratique *</label>
+                        <input type="date" id="dateEntretien" name="dateEntretien" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Type d'entretien réalisé *</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="femme" name="typeEntretien" value="Femme enceinte" required>
+                                <label for="femme">👶 Femme enceinte</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="opioides" name="typeEntretien" value="Opioïdes">
+                                <label for="opioides">💊 Opioïdes</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="aod" name="typeEntretien" value="AOD">
+                                <label for="aod">💉 AOD</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="avk" name="typeEntretien" value="AVK">
+                                <label for="avk">🩸 AVK</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="asthme" name="typeEntretien" value="Asthme">
+                                <label for="asthme">🫁 Asthme</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Évaluation -->
+                <div class="form-section">
+                    <h2>📊 Évaluation de la pratique</h2>
+
+                    <div class="info-box">
+                        💡 Évaluez honnêtement votre ressenti pour que nous puissions vous accompagner au mieux
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ressenti global de l'entretien *</label>
+                        <div class="rating-group" id="ratingGroup">
+                            <div class="rating-option" data-value="1">1</div>
+                            <div class="rating-option" data-value="2">2</div>
+                            <div class="rating-option" data-value="3">3</div>
+                            <div class="rating-option" data-value="4">4</div>
+                            <div class="rating-option" data-value="5">5</div>
+                        </div>
+                        <p style="text-align: center; margin-top: 10px; color: #666; font-size: 0.9rem;">
+                            1 = Très difficile | 5 = Très facile
+                        </p>
+                        <input type="hidden" id="evaluation" name="evaluation" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Difficultés rencontrées (plusieurs choix possibles)</label>
+                        <div class="difficulty-badges" id="difficultyBadges">
+                            <div class="difficulty-badge" data-difficulty="Gestion du temps">⏰ Gestion du temps</div>
+                            <div class="difficulty-badge" data-difficulty="Compréhension des consignes">📋 Compréhension des consignes</div>
+                            <div class="difficulty-badge" data-difficulty="Communication avec le patient">💬 Communication</div>
+                            <div class="difficulty-badge" data-difficulty="Résistance du patient">🛡️ Résistance du patient</div>
+                            <div class="difficulty-badge" data-difficulty="Aspect technique">🔧 Aspect technique</div>
+                            <div class="difficulty-badge" data-difficulty="Confiance en soi">💪 Confiance en soi</div>
+                            <div class="difficulty-badge" data-difficulty="Aucune difficulté">✅ Aucune difficulté</div>
+                        </div>
+                        <input type="hidden" id="difficultes" name="difficultes">
+                    </div>
+                </div>
+
+                <!-- Section 4: Retour détaillé -->
+                <div class="form-section">
+                    <h2>📝 Retour détaillé</h2>
+
+                    <div class="form-group">
+                        <label for="gestionDifficultes">Comment avez-vous géré les difficultés rencontrées ? *</label>
+                        <textarea id="gestionDifficultes" name="gestionDifficultes" placeholder="Décrivez les stratégies utilisées, les solutions trouvées..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="observations">Observations personnelles ou autres retours</label>
+                        <textarea id="observations" name="observations" placeholder="Points positifs, améliorations possibles, questions..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="besoinsSuivi">Avez-vous besoin d'un accompagnement supplémentaire ?</label>
+                        <select id="besoinsSuivi" name="besoinsSuivi">
+                            <option value="">-- Sélectionnez --</option>
+                            <option value="Non">Non, je suis à l'aise</option>
+                            <option value="Oui - rappel théorique">Oui - rappel théorique</option>
+                            <option value="Oui - pratique supplémentaire">Oui - pratique supplémentaire</option>
+                            <option value="Oui - débriefing individuel">Oui - débriefing individuel</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">📤 Envoyer mon retour</button>
+            </form>
+
+            <div class="success-message" id="successMessage">
+                <h3>✅ Retour envoyé avec succès !</h3>
+                <p>Merci pour votre participation. Votre formateur a reçu vos informations.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // CONFIGURATION AIRTABLE
+        // ==========================================
+        const AIRTABLE_CONFIG = {
+            webhookUrl: 'https://hooks.airtable.com/workflows/v1/genericWebhook/appLyreRyfaYDIsyc/wflXZYKModO0lLrNk/wtrccVGWHC9vpY8IG'
+            // ✅ Webhook configuré et connecté à votre base Airtable "Suivi Pratiques"
+        };
+
+        // ==========================================
+        // GESTION DU RATING
+        // ==========================================
+        const ratingOptions = document.querySelectorAll('.rating-option');
+        const evaluationInput = document.getElementById('evaluation');
+
+        ratingOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                ratingOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                evaluationInput.value = this.dataset.value;
+            });
+        });
+
+        // ==========================================
+        // GESTION DES DIFFICULTÉS (MULTI-SELECT)
+        // ==========================================
+        const difficultyBadges = document.querySelectorAll('.difficulty-badge');
+        const difficultesInput = document.getElementById('difficultes');
+        let selectedDifficulties = [];
+
+        difficultyBadges.forEach(badge => {
+            badge.addEventListener('click', function() {
+                const difficulty = this.dataset.difficulty;
+                
+                // Si "Aucune difficulté" est sélectionné, désélectionner tout
+                if (difficulty === "Aucune difficulté") {
+                    difficultyBadges.forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedDifficulties = [difficulty];
+                } else {
+                    // Désélectionner "Aucune difficulté" si autre choix
+                    document.querySelector('[data-difficulty="Aucune difficulté"]').classList.remove('selected');
+                    
+                    this.classList.toggle('selected');
+                    
+                    if (selectedDifficulties.includes(difficulty)) {
+                        selectedDifficulties = selectedDifficulties.filter(d => d !== difficulty);
+                    } else {
+                        selectedDifficulties = selectedDifficulties.filter(d => d !== "Aucune difficulté");
+                        selectedDifficulties.push(difficulty);
+                    }
+                }
+                
+                difficultesInput.value = selectedDifficulties.join(', ');
+            });
+        });
+
+        // ==========================================
+        // SOUMISSION DU FORMULAIRE
+        // ==========================================
+        document.getElementById('suiviForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Validation
+            if (!evaluationInput.value) {
+                alert('⚠️ Veuillez sélectionner une note d\'évaluation (1 à 5)');
+                return;
+            }
+
+            // Collecte des données
+            const formData = {
+                nom: document.getElementById('nom').value,
+                prenom: document.getElementById('prenom').value,
+                email: document.getElementById('email').value,
+                officine: document.getElementById('officine').value || 'Non renseigné',
+                dateEntretien: document.getElementById('dateEntretien').value,
+                typeEntretien: document.querySelector('input[name="typeEntretien"]:checked').value,
+                evaluation: evaluationInput.value,
+                difficultes: difficultesInput.value || 'Aucune difficulté',
+                gestionDifficultes: document.getElementById('gestionDifficultes').value,
+                observations: document.getElementById('observations').value || 'Aucune observation',
+                besoinsSuivi: document.getElementById('besoinsSuivi').value || 'Non renseigné',
+                dateEnvoi: new Date().toISOString()
+            };
+
+            console.log('📤 Données à envoyer:', formData);
+
+            // Envoi vers Airtable
+            try {
+                const response = await fetch(AIRTABLE_CONFIG.webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    console.log('✅ Données envoyées avec succès à Airtable');
+                    
+                    // Afficher message de succès
+                    document.getElementById('successMessage').classList.add('show');
+                    
+                    // Masquer le formulaire
+                    document.getElementById('suiviForm').style.display = 'none';
+                    
+                    // Réinitialiser après 3 secondes (optionnel)
+                    setTimeout(() => {
+                        location.reload();
+                    }, 3000);
+                } else {
+                    throw new Error('Erreur lors de l\'envoi');
+                }
+            } catch (error) {
+                console.error('❌ Erreur:', error);
+                alert('❌ Une erreur est survenue lors de l\'envoi. Veuillez réessayer.');
+            }
+        });
+    </script>
+</body>
+</html>

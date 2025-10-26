@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "outil-suivi-formation.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "dashboard-formateur.html",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/outil-suivi-formation.html"
+    },
+    {
+      "src": "/dashboard",
+      "dest": "/dashboard-formateur.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
+}
